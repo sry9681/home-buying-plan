@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Housing Investment Plan and Calculator</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <style>
+        body {
+            font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #3f51b5;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+        }
+        main {
+            padding: 2rem;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2rem;
+        }
+        h2 {
+            width: 100%;
+            text-align: center;
+        }
+        .input-group {
+            margin-bottom: 1rem;
+        }
+        .slider-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .slider-container .mdl-textfield {
+            flex: none; /* Do not allow the text fields to grow or shrink */
+        }
+
+        .slider-container .mdl-slider {
+            width: 40vw;
+        }
+        .slider-inputs {
+            display: flex;
+            justify-content: space-between;
+            width: 100%; /* Match the width of the slider above */
+            margin-top: 8px; /* Add some space between the slider and the inputs */
+        }
+        .slider-inputs .mdl-textfield {
+            flex-basis: 48%; /* Adjust this value as needed */
+        }
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            width: calc(100% - 200px);
+            margin: 0 auto;
+        }
+        #homePriceValue, #closingCostsValue, #monthlyCost, #totalSavings {
+            text-align: center;
+            font-weight: bold;
+            margin-top: 0.5rem;
+            font-size: 1.2em;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        .input-with-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .info-text {
+            font-size: 0.9em;
+            color: #666;
+        }
+        .main-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 2rem;
+            width: 100%;
+        }
+        .input-groups-container,
+        .chart-container {
+            flex: 1;
+            min-width: 0;
+        }
+        .chart-container {
+            height: 400px;
+            width: 100%;
+        }
+        .chart-canvas-container {
+            height: 100%;
+            width: 100%;
+        }
+        canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+        .savings-section {
+            width: 100%;
+        }
+        .mdl-textfield {
+            width: 150px;
+        }
+        .mdl-textfield__input[type="number"] {
+            /*width: 100%;*/
+            width: calc(10ch + 16px);
+        }
+        label {
+            display: block;
+            margin-bottom: 0.25rem;
+            font-weight: bold;
+        }
+        .savings-inputs {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .savings-inputs .input-group {
+            flex: 1;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Housing Investment Plan and Calculator</h1>
+    </header>
+    <main>
+        <h2>Home Price Calculator</h2>
+        <div class="main-container">
+            <div class="input-groups-container">
+                <div class="input-group">
+                    <div class="slider-container">
+                        <input type="range" id="homePrice" name="homePrice" min="50000" max="300000" step="1000" value="175000" class="mdl-slider mdl-js-slider">
+                    </div>
+                    <div class="slider-labels">
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input class="mdl-textfield__input" type="number" id="minPrice" name="minPrice" value="50000" min="0">
+                            <label class="mdl-textfield__label" for="minPrice">Min Price</label>
+                        </div>
+                        <div id="homePriceValue">$175,000</div>
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input class="mdl-textfield__input" type="number" id="maxPrice" name="maxPrice" value="300000" min="0">
+                            <label class="mdl-textfield__label" for="maxPrice">Max Price</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="downPayment">Down Payment:</label>
+                    <div class="mdl-textfield mdl-js-textfield">
+                        <input class="mdl-textfield__input" type="number" id="downPayment" name="downPayment" value="30000" min="0">
+                        <label class="mdl-textfield__label" for="downPayment">Down Payment</label>
+                    </div>
+                    <span id="loanAmount" class="info-text">Loan Amount: $145,000</span>
+                </div>
+                <div class="input-group">
+                    <label for="closingCosts">Closing Costs (%): <span id="closingCostsDollar">()</span></label>
+                    <div class="slider-container">
+
+                        <input type="range" id="closingCosts" name="closingCosts" min="2" max="5" step="0.1" value="3.5" class="mdl-slider mdl-js-slider">
+
+                    </div>
+                    <div class="slider-labels">
+                        <span>2%</span>
+                        <span>5%</span>
+                    </div>
+                    <div id="closingCostsValue">3.5%</div>
+                </div>
+                <div class="input-group">
+                    <label for="loanTerm">Loan Term:</label>
+                    <select id="loanTerm" name="loanTerm" class="mdl-textfield__input">
+                        <option value="15">15 years</option>
+                        <option value="30" selected>30 years</option>
+                    </select>
+                </div>
+                <div class="grid-container">
+                    <div class="input-group">
+                        <label for="interestRate">Interest Rate (%):</label>
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input" type="number" id="interestRate" name="interestRate" value="5.95" min="0" step="0.01">
+                            <label class="mdl-textfield__label" for="interestRate">Interest Rate</label>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="propertyTax">Property Tax (% of home value per year):</label>
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input" type="number" id="propertyTax" name="propertyTax" value="1.1" min="0" step="0.01">
+                            <label class="mdl-textfield__label" for="propertyTax">Property Tax</label>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="insurance">Insurance (% of home value per year):</label>
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input" type="number" id="insurance" name="insurance" value="0.5" min="0" step="0.01">
+                            <label class="mdl-textfield__label" for="insurance">Insurance</label>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="hoa">HOA (monthly):</label>
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input" type="number" id="hoa" name="hoa" value="0" min="0">
+                            <label class="mdl-textfield__label" for="hoa">HOA</label>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="gas">Gas (monthly):</label>
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input" type="number" id="gas" name="gas" value="0" min="0">
+                            <label class="mdl-textfield__label" for="gas">Gas</label>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="electricity">Electricity (monthly):</label>
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input" type="number" id="electricity" name="electricity" value="0" min="0">
+                            <label class="mdl-textfield__label" for="electricity">Electricity</label>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="internet">Internet (monthly):</label>
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input" type="number" id="internet" name="internet" value="0" min="0">
+                            <label class="mdl-textfield__label" for="internet">Internet</label>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="waterTrash">Water & Trash (monthly):</label>
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input" type="number" id="waterTrash" name="waterTrash" value="0" min="0">
+                            <label class="mdl-textfield__label" for="waterTrash">Water & Trash</label>
+                        </div>
+                    </div>
+                </div>
+                <div id="monthlyCost">Total Monthly Cost: $0</div>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-canvas-container">
+                    <canvas id="homePriceChart"></canvas>
+                </div>
+
+                <div class="savings-section">
+                    <h2>House and Savings Amount ($)</h2>
+                    <div class="savings-inputs">
+                        <div class="input-group">
+                            <label for="person1Contribution">Person 1 Contribution:</label>
+                            <input class="mdl-textfield__input" type="number" id="person1Contribution" name="person1Contribution" value="0" min="0">
+                        </div>
+                        <div class="input-group">
+                            <label for="person2Contribution">Person 2 Contribution:</label>
+                            <input class="mdl-textfield__input" type="number" id="person2Contribution" name="person2Contribution" value="0" min="0">
+                        </div>
+                    </div>
+                    <div id="totalSavings">Total Savings: $0</div>
+
+                    <div class="input-group">
+                        <label for="savingsGoal">Savings Goal:</label>
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input" type="number" id="savingsGoal" name="savingsGoal" value="0" min="0">
+                            <label class="mdl-textfield__label" for="savingsGoal">Savings Goal</label>
+                        </div>
+                    </div>
+                    <div id="goalMetMonth">Goal Met Month: -</div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2024 Housing Investment Plan and Calculator. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Cache DOM elements
+        const elements = {
+            homePrice: document.getElementById('homePrice'),
+            homePriceValue: document.getElementById('homePriceValue'),
+            minPrice: document.getElementById('minPrice'),
+            maxPrice: document.getElementById('maxPrice'),
+            downPayment: document.getElementById('downPayment'),
+            closingCosts: document.getElementById('closingCosts'),
+            closingCostsValue: document.getElementById('closingCostsValue'),
+            closingCostsDollar: document.getElementById('closingCostsDollar'),
+            loanAmountSpan: document.getElementById('loanAmount'),
+            loanTerm: document.getElementById('loanTerm'),
+            interestRate: document.getElementById('interestRate'),
+            propertyTax: document.getElementById('propertyTax'),
+            insurance: document.getElementById('insurance'),
+            hoa: document.getElementById('hoa'),
+            gas: document.getElementById('gas'),
+            electricity: document.getElementById('electricity'),
+            internet: document.getElementById('internet'),
+            waterTrash: document.getElementById('waterTrash'),
+            monthlyCost: document.getElementById('monthlyCost'),
+            person1Contribution: document.getElementById('person1Contribution'),
+            person2Contribution: document.getElementById('person2Contribution'),
+            totalSavings: document.getElementById('totalSavings'),
+            savingsGoal: document.getElementById('savingsGoal'),
+            goalMetMonth: document.getElementById('goalMetMonth'),
+            chartCanvas: document.getElementById('homePriceChart')
+        };
+
+        let homePriceChartInstance = null;
+
+        function updateSlider() {
+            const min = parseInt(elements.minPrice.value);
+            const max = parseInt(elements.maxPrice.value);
+            
+            if (min >= max) {
+                alert("Minimum price must be less than maximum price");
+                elements.minPrice.value = elements.homePrice.min;
+                elements.maxPrice.value = elements.homePrice.max;
+                return;
+            }
+
+            elements.homePrice.min = min;
+            elements.homePrice.max = max;
+            elements.homePrice.value = Math.min(Math.max(elements.homePrice.value, min), max);
+            updateCalculations();
+        }
+
+        function updateCalculations() {
+            const price = parseInt(elements.homePrice.value);
+            const payment = parseInt(elements.downPayment.value);
+            const closing = parseFloat(elements.closingCosts.value);
+            const term = parseInt(elements.loanTerm.value);
+            const rate = parseFloat(elements.interestRate.value) / 100 / 12;
+            const propertyTaxRate = parseFloat(elements.propertyTax.value) / 100 / 12;
+            const insuranceRate = parseFloat(elements.insurance.value) / 100 / 12;
+            const hoaFee = parseFloat(elements.hoa.value);
+            const gasFee = parseFloat(elements.gas.value);
+            const electricityFee = parseFloat(elements.electricity.value);
+            const internetFee = parseFloat(elements.internet.value);
+            const waterTrashFee = parseFloat(elements.waterTrash.value);
+            
+            elements.homePriceValue.textContent = `$${price.toLocaleString()}`;
+            elements.closingCostsValue.textContent = `${closing.toFixed(1)}%`;
+            
+            const totalClosingCosts = price * (closing / 100);
+            elements.closingCostsDollar.textContent = `($${totalClosingCosts.toLocaleString()})`;
+            
+            const totalDownPayment = payment + totalClosingCosts;
+            
+            if (totalDownPayment > price) {
+                alert("Down payment plus closing costs cannot exceed home price");
+                elements.downPayment.value = Math.max(0, price - totalClosingCosts);
+                return;
+            }
+
+            const loanAmountValue = price - (payment - totalClosingCosts);
+            elements.loanAmountSpan.textContent = `Loan Amount: $${loanAmountValue.toLocaleString()}`;
+            
+            const monthlyPayments = term * 12;
+            
+            const mortgagePayment = loanAmountValue * (rate * Math.pow(1 + rate, monthlyPayments)) / (Math.pow(1 + rate, monthlyPayments) - 1);
+            const monthlyPropertyTax = price * propertyTaxRate;
+            const monthlyInsurance = price * insuranceRate;
+            
+            const totalMonthlyCost = mortgagePayment + monthlyPropertyTax + monthlyInsurance + hoaFee + gasFee + electricityFee + internetFee + waterTrashFee;
+            
+            elements.monthlyCost.textContent = `Total Monthly Cost: $${totalMonthlyCost.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+
+            const totalContribution = parseFloat(elements.person1Contribution.value || 0) + parseFloat(elements.person2Contribution.value || 0);
+            const savings = totalContribution - totalMonthlyCost;
+            elements.totalSavings.textContent = `Total Savings: $${savings.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+
+            updateChart(totalMonthlyCost, savings);
+        }
+
+        function initializeChart() {
+            // Use default values to create the initial chart
+            const defaultMonthlyPayment = 1000; // Example default value
+            const defaultSavings = 500; // Example default value
+            updateChart(defaultMonthlyPayment, defaultSavings);
+        }
+
+        function updateChart(monthlyCostValue, monthlySavingsValue) {
+            const term = parseInt(elements.loanTerm.value) * 12;
+            
+            const monthlyCosts = Array(term).fill(monthlyCostValue);
+            const totalSpent = monthlyCosts.map((cost, index) => cost * (index + 1));
+            const cumulativeSavings = Array(term).fill(monthlySavingsValue).map((savings, index) => savings * (index + 1));
+
+            const savingsGoalValue = parseFloat(elements.savingsGoal.value);
+            const savingsGoalData = Array(term).fill(savingsGoalValue);
+            let goalMetMonthValue = cumulativeSavings.findIndex(savings => savings >= savingsGoalValue) + 1;
+
+            elements.goalMetMonth.textContent = `Goal Met Month: ${goalMetMonthValue > 0 ? goalMetMonthValue : '-'}`;
+
+            let xAxisMax = goalMetMonthValue > 0 ? Math.ceil(goalMetMonthValue * 1.15) : term;
+
+            const ctx = elements.chartCanvas.getContext('2d');
+            if (homePriceChartInstance) {
+                homePriceChartInstance.destroy();
+            }
+
+            homePriceChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: Array.from({ length: term }, (_, i) => i + 1),
+                    datasets: [{
+                        label: 'Monthly Cost',
+                        data: monthlyCosts,
+                        borderColor: 'rgb(255, 99, 132)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                    }, {
+                        label: 'Total Spent on Home',
+                        data: totalSpent,
+                        borderColor: 'rgb(54, 162, 235)',
+                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    }, {
+                        label: 'Cumulative Savings',
+                        data: cumulativeSavings,
+                        borderColor: 'rgb(75, 192, 192)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                    }, {
+                        label: 'Savings Goal',
+                        data: savingsGoalData,
+                        borderColor: 'rgb(0, 0, 0)',
+                        borderDash: [5, 5],
+                        fill: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Months'
+                            },
+                            beginAtZero: true,
+                            max: xAxisMax
+                        },
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Amount ($)'
+                            }
+                        }
+                    }
+                }
+            });
+
+            if (goalMetMonthValue > 0) {
+                homePriceChartInstance.data.datasets.push({
+                    label: 'Goal Met Point',
+                    data: Array(term).fill(null).map((_, index) => index + 1 === goalMetMonthValue ? cumulativeSavings[index] : null),
+                    borderColor: 'rgb(255, 0, 0)',
+                    backgroundColor: 'rgb(255, 0, 0)',
+                    pointRadius: 5,
+                    pointHoverRadius: 7,
+                    showLine: false
+                });
+            }
+
+            homePriceChartInstance.update();
+        }
+        // Function to calculate and update the loan amount
+        function calculateAndUpdateLoanAmount() {
+            const homePrice = parseInt(document.getElementById('homePrice').value, 10);
+            const downPayment = parseInt(document.getElementById('downPayment').value, 10);
+            const loanAmount = homePrice - downPayment;
+            document.getElementById('loanAmount').textContent = `Loan Amount: $${loanAmount.toLocaleString()}`;
+        }
+
+        // Add event listeners
+        Object.values(elements).forEach(element => {
+            if (element && element.addEventListener) {
+                element.addEventListener('input', updateCalculations);
+            }
+        });
+
+        elements.minPrice.addEventListener('change', updateSlider);
+        elements.maxPrice.addEventListener('change', updateSlider);
+        ['downPayment', 'homePrice', 'closingCosts'].forEach(id => {
+            document.getElementById(id).addEventListener('input', calculateAndUpdateLoanAmount);
+        });
+
+        // Initialize MDL components
+        componentHandler.upgradeAllRegistered();
+
+        // Initial calculation
+        updateSlider();
+
+        // DOM content loaded event
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM fully loaded and parsed');
+            componentHandler.upgradeAllRegistered();
+            calculateAndUpdateLoanAmount();
+            initializeChart(); // Initialize the chart with default values
+            updateCalculations(); // Then update with actual input values
+        });
+    </script>
+</body>
+</html>
