@@ -1,0 +1,127 @@
+body {
+    font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+header {
+    background-color: #3f51b5;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+}
+main {
+    padding: 2rem;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    margin-top: 2rem;
+}
+h2 {
+    width: 100%;
+    text-align: center;
+}
+.input-group {
+    margin-bottom: 1rem;
+}
+.slider-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.slider-container .mdl-textfield {
+    flex: none; /* Do not allow the text fields to grow or shrink */
+}
+
+.slider-container .mdl-slider {
+    width: 40vw;
+}
+.slider-inputs {
+    display: flex;
+    justify-content: space-between;
+    width: 100%; /* Match the width of the slider above */
+    margin-top: 8px; /* Add some space between the slider and the inputs */
+}
+.slider-inputs .mdl-textfield {
+    flex-basis: 48%; /* Adjust this value as needed */
+}
+.slider-labels {
+    display: flex;
+    justify-content: space-between;
+    width: calc(100% - 200px);
+    margin: 0 auto;
+}
+#homePriceValue, #closingCostsValue, #monthlyCost, #totalSavings {
+    text-align: center;
+    font-weight: bold;
+    margin-top: 0.5rem;
+    font-size: 1.2em;
+}
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+.input-with-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.info-text {
+    font-size: 0.9em;
+    color: #666;
+}
+.main-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    width: 100%;
+}
+.input-groups-container,
+.chart-container {
+    flex: 1;
+    min-width: 0;
+}
+.chart-container {
+    height: 400px;
+    width: 100%;
+}
+.chart-canvas-container {
+    height: 100%;
+    width: 100%;
+}
+canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+.savings-section {
+    width: 100%;
+}
+.mdl-textfield {
+    width: 150px;
+}
+.mdl-textfield__input[type="number"] {
+    /*width: 100%;*/
+    width: calc(10ch + 16px);
+}
+label {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-weight: bold;
+}
+.savings-inputs {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.savings-inputs .input-group {
+    flex: 1;
+}
