@@ -31,8 +31,8 @@ This repository contains a JavaScript-based tool that helps users calculate thei
 ## Getting Started
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/yourusername/home-price-calculator.git
-   cd home-price-calculator
+   git clone https://github.com/sry9681/home-buying-plan.git
+   cd home-buying-plan
    ```
 2. **Open in Browser**
    - Open `index.html` in your preferred browser to interact with the tool.
