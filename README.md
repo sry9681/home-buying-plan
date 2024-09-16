@@ -3,6 +3,9 @@
 ## Overview
 This repository contains a JavaScript-based tool that helps users calculate their loan amount based on home price, down payment, and other financial inputs. Additionally, it visualizes the user's savings progress towards a specific goal using a dynamic line chart powered by Chart.js. The project also integrates Material Design Lite (MDL) for enhanced UI components.
 
+![image](https://github.com/user-attachments/assets/241423d7-8778-404a-af08-abaa647d62ba)
+
+
 ## Features
 - **Loan Calculation**: Automatically calculates the loan amount based on user input for home price and down payment.
 - **Savings Tracker**: Visualizes monthly savings, total spent on home, cumulative savings, and a savings goal using an interactive line chart.
