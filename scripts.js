@@ -220,3 +220,30 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeChart(); // Initialize the chart with default values
     updateCalculations(); // Then update with actual input values
 });
+
+// Function to save data
+function saveData() {
+    const inputs = document.querySelectorAll('input[type="number"], input[type="range"], select');
+    inputs.forEach(input => {
+        localStorage.setItem(input.name, input.value);
+    });
+}
+
+// Event listener to save data on input change
+document.querySelectorAll('input[type="number"], input[type="range"], select').forEach(input => {
+    input.addEventListener('change', saveData);
+});
+
+// Function to load data
+function loadData() {
+    const inputs = document.querySelectorAll('input[type="number"], input[type="range"], select');
+    inputs.forEach(input => {
+        const savedValue = localStorage.getItem(input.name);
+        if (savedValue) {
+            input.value = savedValue;
+        }
+    });
+}
+
+// Load data on page load
+document.addEventListener('DOMContentLoaded', loadData);
