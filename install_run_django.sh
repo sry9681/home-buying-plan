@@ -18,7 +18,7 @@ fi
 
 # Activate the virtual environment
 echo "Activating virtual environment..."
-source "./$VENV_DIR/bin/activate"
+source "$VENV_DIR/bin/activate" || { echo "Failed to activate virtual environment."; exit 1; }
 
 # Check if Django is installed
 if ! pip freeze | grep -q Django; then
