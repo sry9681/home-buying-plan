@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Home Price Calculator</h2>
+    <div class="main-container">
+        <div class="input-groups-container">
+            <div class="input-group">
+                <div class="slider-container">
+                    <input type="range" id="homePrice" name="homePrice" min="{{ defaults.home_price_min }}" max="{{ defaults.home_price_max }}" step="1000" value="{{ defaults.home_price_selected }}" class="mdl-slider mdl-js-slider">
+                </div>
+                <div class="slider-labels">
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <input class="mdl-textfield__input" type="number" id="minPrice" name="minPrice" value="{{ defaults.home_price_min }}" min="0">
+                        <label class="mdl-textfield__label" for="minPrice">Min Price</label>
+                    </div>
+                    <div id="homePriceValue">${{ defaults.home_price_selected }}</div>
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <input class="mdl-textfield__input" type="number" id="maxPrice" name="maxPrice" value="{{ defaults.home_price_max }}" min="0">
+                        <label class="mdl-textfield__label" for="maxPrice">Max Price</label>
+                    </div>
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="downPayment">Down Payment:</label>
+                <div class="mdl-textfield mdl-js-textfield">
+                    <input class="mdl-textfield__input" type="number" id="downPayment" name="downPayment" value="{{ defaults.down_payment }}" min="0">
+                    <label class="mdl-textfield__label" for="downPayment">Down Payment</label>
+                </div>
+                <span id="loanAmount" class="info-text">Loan Amount: $145,000</span>
+            </div>
+            <div class="input-group">
+                <label for="closingCosts">Closing Costs (%): <span id="closingCostsDollar">()</span></label>
+                <div class="slider-container">
+
+                    <input type="range" id="closingCosts" name="closingCosts" min="{{ defaults.closing_costs_perc_min }}" max="{{ defaults.closing_costs_perc_max }}" step="0.1" value="{{ defaults.closing_costs_perc_selected }}" class="mdl-slider mdl-js-slider">
+
+                </div>
+                <div class="slider-labels">
+                    <span>{{ defaults.closing_costs_perc_min }}</span>
+                    <span>{{ defaults.closing_costs_perc_max }}</span>
+                </div>
+                <div id="closingCostsValue">{{ defaults.closing_costs_perc_selected }}%</div>
+            </div>
+            <div class="input-group">
+                <label for="loanTerm">Loan Term:</label>
+                <select id="loanTerm" name="loanTerm" class="mdl-textfield__input">
+                    <option value="15" {% if defaults.loan_term == 15 %}selected{% endif %}>15 years</option>
+                    <option value="30" {% if defaults.loan_term == 30 %}selected{% endif %}>30 years</option>
+                </select>
+            </div>
+            <div class="grid-container">
+                <div class="input-group">
+                    <label for="interestRate">Interest Rate (%):</label>
+                    <div class="mdl-textfield mdl-js-textfield">
+                        <input class="mdl-textfield__input" type="number" id="interestRate" name="interestRate" value="{{ defaults.interest_rate }}" min="0" step="0.01">
+                        <label class="mdl-textfield__label" for="interestRate">Interest Rate</label>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="propertyTax">Property Tax (% of home value per year):</label>
+                    <div class="mdl-textfield mdl-js-textfield">
+                        <input class="mdl-textfield__input" type="number" id="propertyTax" name="propertyTax" value="{{ defaults.property_tax }}" min="0" step="0.01">
+                        <label class="mdl-textfield__label" for="propertyTax">Property Tax</label>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="insurance">Insurance (% of home value per year):</label>
+                    <div class="mdl-textfield mdl-js-textfield">
+                        <input class="mdl-textfield__input" type="number" id="insurance" name="insurance" value="{{ defaults.insurance_rate }}" min="0" step="0.01">
+                        <label class="mdl-textfield__label" for="insurance">Insurance</label>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="hoa">HOA (monthly):</label>
+                    <div class="mdl-textfield mdl-js-textfield">
+                        <input class="mdl-textfield__input" type="number" id="hoa" name="hoa" value="{{ defaults.hoa }}" min="0">
+                        <label class="mdl-textfield__label" for="hoa">HOA</label>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="gas">Gas (monthly):</label>
+                    <div class="mdl-textfield mdl-js-textfield">
+                        <input class="mdl-textfield__input" type="number" id="gas" name="gas" value="{{ defaults.gas }}" min="0">
+                        <label class="mdl-textfield__label" for="gas">Gas</label>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="electricity">Electricity (monthly):</label>
+                    <div class="mdl-textfield mdl-js-textfield">
+                        <input class="mdl-textfield__input" type="number" id="electricity" name="electricity" value="{{ defaults.electricity }}" min="0">
+                        <label class="mdl-textfield__label" for="electricity">Electricity</label>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="internet">Internet (monthly):</label>
+                    <div class="mdl-textfield mdl-js-textfield">
+                        <input class="mdl-textfield__input" type="number" id="internet" name="internet" value="{{ defaults.internet }}" min="0">
+                        <label class="mdl-textfield__label" for="internet">Internet</label>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="waterTrash">Water & Trash (monthly):</label>
+                    <div class="mdl-textfield mdl-js-textfield">
+                        <input class="mdl-textfield__input" type="number" id="waterTrash" name="waterTrash" value="{{ defaults.water_trash }}" min="0">
+                        <label class="mdl-textfield__label" for="waterTrash">Water & Trash</label>
+                    </div>
+                </div>
+            </div>
+            <div id="monthlyCost">Total Monthly Cost: $0</div>
+        </div>
+
+        <div class="chart-container">
+            <div class="chart-canvas-container">
+                <canvas id="homePriceChart"></canvas>
+            </div>
+
+            <div class="savings-section">
+                <h2>House and Savings Amount ($)</h2>
+                <div class="savings-inputs">
+                    <div class="input-group">
+                        <label for="person1Contribution">Person 1 Contribution:</label>
+                        <input class="mdl-textfield__input" type="number" id="person1Contribution" name="person1Contribution" value="{{ defaults.contribution }}" min="0">
+                    </div>
+                    <div class="input-group">
+                        <label for="person2Contribution">Person 2 Contribution:</label>
+                        <input class="mdl-textfield__input" type="number" id="person2Contribution" name="person2Contribution" value="{{ defaults.contribution }}" min="0">
+                    </div>
+                </div>
+                <div id="totalSavings">Total Savings: $0</div>
+
+                <div class="input-group">
+                    <label for="savingsGoal">Savings Goal:</label>
+                    <div class="mdl-textfield mdl-js-textfield">
+                        <input class="mdl-textfield__input" type="number" id="savingsGoal" name="savingsGoal" value="{{ defaults.savings_goal }}" min="0">
+                        <label class="mdl-textfield__label" for="savingsGoal">Savings Goal</label>
+                    </div>
+                </div>
+                <div id="goalMetMonth">Goal Met Month: -</div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
