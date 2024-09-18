@@ -1,10 +1,9 @@
-# Home Price Calculator and Savings Tracker
+# Housing Investment Plan and Calculator
 
 ## Overview
-This repository contains a JavaScript-based tool that helps users calculate their loan amount based on home price, down payment, and other financial inputs. Additionally, it visualizes the user's savings progress towards a specific goal using a dynamic line chart powered by Chart.js. The project also integrates Material Design Lite (MDL) for enhanced UI components.
+This repository contains a Django-based web application that helps users calculate their loan amount based on home price, down payment, and other financial inputs. Additionally, it visualizes the user's savings progress towards a specific goal using a dynamic line chart powered by Chart.js. The project also integrates Material Design Lite (MDL) for enhanced UI components.
 
 ![image](https://github.com/user-attachments/assets/241423d7-8778-404a-af08-abaa647d62ba)
-
 
 ## Features
 - **Loan Calculation**: Automatically calculates the loan amount based on user input for home price and down payment.
@@ -24,28 +23,57 @@ This repository contains a JavaScript-based tool that helps users calculate thei
 5. **Event Handling**: Changes in input fields trigger recalculations and updates to the UI and chart dynamically.
 
 ## Technologies Used
+- **Django**: The web framework for perfectionists with deadlines.
 - **JavaScript**: For core functionality and dynamic content manipulation.
 - **Chart.js**: To create interactive and responsive line charts.
 - **Material Design Lite (MDL)**: For styling and enhancing user interface components.
 
 ## Getting Started
+To get a local copy up and running follow these simple steps.
+
 1. **Clone the Repository**
    ```bash
    git clone https://github.com/sry9681/home-buying-plan.git
    cd home-buying-plan
    ```
-2. **Open in Browser**
-   - Open `index.html` in your preferred browser to interact with the tool.
-3. **Modify and Extend**
-   - Feel free to modify the JavaScript code in `script.js` to add new features or customize existing ones.
+2. **Set Up a Virtual Environment**
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+   ```
+3. **Install Dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+4. **Run Migrations**
+   ```bash
+   python manage.py migrate
+   ```
+5. **Start the Development Server**
+   ```bash
+   python manage.py runserver
+   ```
+6. **Open Web Browser**
+   - Navigate to `http://127.0.0.1:8000/` to view the application.
 
 ## Directory Structure
 ```
-home-price-calculator/
+home-buying-plan/
 │
-├── index.html        # Main HTML file for UI layout
-├── script.js         # Core JavaScript logic for calculations and chart updates
-└── README.md         # This readme file
+├── realestateapp/ # Django app directory
+│ ├── static/ # Static files like CSS and JavaScript
+│ ├── templates/ # Template files
+│ ├── admin.py # Admin site configuration
+│ ├── models.py # Database models
+│ ├── views.py # Views for handling requests
+│ └── ...
+├── homeBuyersPlan/ # Django project directory
+│ ├── settings.py # Django settings
+│ ├── urls.py # Project URLs
+│ └── ...
+├── manage.py # Command-line utility for administrative tasks
+├── requirements.txt # Project dependencies
+└── README.md # This readme file
 ```
 
 ## Contributing
@@ -57,10 +85,3 @@ Contributions are welcome! Here’s how you can help:
 
 ## Issues and Feedback
 If you encounter any bugs or have suggestions for improvements, please open an issue on the repository page.
-
-## License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-By following this README, developers should be able to understand the purpose and functionality of the code, set up their environment, and contribute effectively to the project.
