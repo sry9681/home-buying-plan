@@ -20,14 +20,8 @@ fi
 echo "Activating virtual environment..."
 source "$VENV_DIR/bin/activate" || { echo "Failed to activate virtual environment."; exit 1; }
 
-# Check if Django is installed
-if ! pip freeze | grep -q Django; then
-    # Django is not installed, install it
-    echo "Installing Django..."
-    pip install django
+# Install requirements from requirements.txt if they are not already installed
+if ! pip freeze | grep -q -f requirements.txt; then
+    echo "Installing required packages from requirements.txt..."
+    pip install -r requirements.txt
 fi
-
-# Run the Django manage.py start command
-# Replace 'start' with 'startapp appname' or 'runserver' as needed
-echo "Running Django manage command..."
-#python manage.py start

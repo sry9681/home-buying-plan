@@ -11,18 +11,88 @@
     <link rel="stylesheet" href="{% static 'styles.css' %}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     {% block extra_head %}{% endblock %}
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        .mdl-layout {
+            min-height: 100vh;
+        }
+        .mdl-layout__content {
+            flex: 1 0 auto;
+            display: flex;
+            flex-direction: column;
+        }
+        .page-content {
+            flex: 1 0 auto;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        @media (min-width: 1201px) and (max-width: 1920px) {
+            .page-content {
+                max-width: 1200px;
+            }
+        }
+        @media (min-width: 1921px) {
+            .page-content {
+                max-width: 1600px;
+            }
+        }
+        @media (max-width: 1200px) {
+            .page-content {
+                padding: 10px;
+            }
+        }
+        @media (max-width: 600px) {
+            .page-content {
+                padding: 5px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <h1>{% block header %}Housing Investment Plan and Calculator{% endblock %}</h1>
-    </header>
-    <main>
-        {% block content %}{% endblock %}
-    </main>
-    <footer>
-        <p>&copy; 2024 Housing Investment Plan and Calculator. All rights reserved.</p>
-    </footer>
-    <script src="{% static 'scripts.js' %}"></script>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <header class="mdl-layout__header">
+            <div class="mdl-layout__header-row">
+                <span class="mdl-layout-title">Housing Investment Plan and Calculator</span>
+                <div class="mdl-layout-spacer"></div>
+                <nav class="mdl-navigation mdl-layout--large-screen-only">
+                    <a class="mdl-navigation__link" href="{% url 'home' %}">Home</a>
+                    {% if user.is_authenticated %}
+                        <a class="mdl-navigation__link" href="{% url 'mortgage_calculator' %}">Mortgage Calculator</a>
+                    {% endif %}
+                </nav>
+                <button id="demo-menu-lower-right" class="mdl-button mdl-js-button mdl-button--icon">
+                    <i class="material-icons">person</i>
+                </button>
+                <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="demo-menu-lower-right">
+                    {% if user.is_authenticated %}
+                        <li class="mdl-menu__item">
+                            <form method="post" action="{% url 'logout' %}">
+                                {% csrf_token %}
+                                <button type="submit" style="background:none;border:none;padding:0;font:inherit;cursor:pointer;">Sign Out</button>
+                            </form>
+                        </li>
+                    {% else %}
+                        <li class="mdl-menu__item"><a href="{% url 'login' %}">Sign In</a></li>
+                        <li class="mdl-menu__item"><a href="{% url 'register' %}">Register</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </header>
+        <div class="mdl-layout__content">
+            <div class="page-content">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </div>
     {% block extra_scripts %}{% endblock %}
 </body>
 </html>
