@@ -8,7 +8,11 @@
 {% endblock %}
 
 {% block content %}
+<!-- Toast notification container -->
+<div id="toast" class="toast"></div>
+
 <div class="calculator-container">
+    {% csrf_token %}
     <h2 class="calculator-title">Mortgage Calculator</h2>
     <div class="calculator-layout">
         <div class="input-column">

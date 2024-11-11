@@ -206,4 +206,62 @@
         initializeChart();
         updateChart(results.totalMonthlyCost, results.savings);
     });
+
+    function showToast(message, isSuccess = true) {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.className = 'toast ' + (isSuccess ? 'success' : 'error') + ' show';
+        
+        // Hide the toast after 3 seconds
+        setTimeout(function() {
+            toast.className = toast.className.replace('show', '');
+        }, 3000);
+    }
+
+    document.getElementById('saveButton')?.addEventListener('click', function() {
+        // Get CSRF token
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        
+        // Gather all the calculation data
+        const calculationData = {
+            home_price: elements.homePrice.value,
+            down_payment: elements.downPayment.value,
+            closing_costs: elements.closingCosts.value,
+            loan_term: elements.loanTerm.value,
+            interest_rate: elements.interestRate.value,
+            property_tax: elements.propertyTax.value,
+            insurance_rate: elements.insurance.value,
+            hoa: elements.hoa.value,
+            gas: elements.gas.value,
+            electricity: elements.electricity.value,
+            internet: elements.internet.value,
+            water_trash: elements.waterTrash.value,
+            person1_contribution: elements.person1Contribution.value,
+            person2_contribution: elements.person2Contribution.value,
+            savings_goal: elements.savingsGoal.value
+        };
+
+        // Send the data to your API endpoint
+        fetch('/api/mortgage-calculation/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken
+            },
+            body: JSON.stringify(calculationData)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            showToast('Calculation saved successfully!', true);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showToast('Error saving calculation', false);
+        });
+    });
 })();
