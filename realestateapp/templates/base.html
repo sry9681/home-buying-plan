@@ -67,6 +67,7 @@
                     <a class="mdl-navigation__link" href="{% url 'home' %}">Home</a>
                     {% if user.is_authenticated %}
                         <a class="mdl-navigation__link" href="{% url 'mortgage_calculator' %}">Mortgage Calculator</a>
+                        <a class="mdl-navigation__link" href="{% url 'savings_amount' %}">Savings Amount</a>
                     {% endif %}
                 </nav>
                 <button id="demo-menu-lower-right" class="mdl-button mdl-js-button mdl-button--icon">

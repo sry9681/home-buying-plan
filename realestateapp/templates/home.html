@@ -1,10 +1,64 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
 <div class="mdl-grid">
-    <div class="mdl-cell mdl-cell--12-col">
-        <h1>Welcome to the Home Buyers Plan</h1>
-        <p>Use our tools to plan your home purchase. Navigate to the Mortgage Calculator using the menu above.</p>
-    </div>
+    {% if user.is_authenticated %}
+        <div class="mdl-cell mdl-cell--12-col">
+            <div class="selection-container">
+                <div class="home-selection">
+                    <select id="selectedHome" class="mdl-textfield__input">
+                        <option value="">Select a home</option>
+                        {% for home in homes %}
+                            <option value="{{ home.id }}">{{ home.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="contributors-selection">
+                    <div class="dropdown-container">
+                        <div class="dropdown-header" id="contributorsDropdown">
+                            Select Contributors ▼
+                        </div>
+                        <div class="dropdown-content">
+                            {% for person in persons %}
+                                <label class="checkbox-container">
+                                    <input type="checkbox" value="{{ person.id }}" data-name="{{ person.name }}" data-amount="{{ person.contribution_amount }}">
+                                    {{ person.name }} (${{ person.contribution_amount }})
+                                </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div id="selectedContributorsList">
+                        <!-- Selected contributors will be shown here -->
+                    </div>
+                </div>
+                <div class="goal-amount-section">
+                    <label for="savingsGoal">Savings Goal:</label>
+                    <input type="number" id="savingsGoal" class="mdl-textfield__input" placeholder="Enter savings goal">
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="homePriceChart"></canvas>
+            </div>
+            <div class="results-summary">
+                <p id="loanAmount">Loan Amount: $0</p>
+                <p id="monthlyCost">Total Monthly Cost: $0</p>
+                <p id="totalSavings">Total Savings: $0</p>
+                <p id="goalMetMonth">Goal Met Month: -</p>
+            </div>
+        </div>
+    {% else %}
+        <div class="mdl-cell mdl-cell--12-col">
+            <h1>Welcome to the Home Buyers Plan</h1>
+            <p>Please sign in to use our tools to plan your home purchase.</p>
+        </div>
+    {% endif %}
 </div>
+{% endblock %}
+
+{% block extra_scripts %}
+{% if user.is_authenticated %}
+    <script src="{% static 'home.js' %}"></script>
+{% endif %}
 {% endblock %}

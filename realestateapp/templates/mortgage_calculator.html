@@ -11,9 +11,57 @@
 <!-- Toast notification container -->
 <div id="toast" class="toast"></div>
 
+<!-- Save Home Modal -->
+<div id="saveHomeModal" class="modal">
+    <div class="modal-content">
+        <h3>Save Home</h3>
+        <div class="input-group">
+            <label for="homeName">Home Name:</label>
+            <input type="text" id="homeName" placeholder="Enter a name for this home">
+        </div>
+        <div class="modal-buttons">
+            <button id="saveHomeConfirm" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">Save</button>
+            <button id="saveHomeCancel" class="mdl-button mdl-js-button mdl-button--raised">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Homes Modal -->
+<div id="editHomesModal" class="modal">
+    <div class="modal-content">
+        <h3>Saved Homes</h3>
+        <div id="savedHomesList">
+            <!-- Saved homes will be populated here -->
+        </div>
+        <div class="modal-buttons">
+            <button id="editHomesClose" class="mdl-button mdl-js-button mdl-button--raised">Close</button>
+        </div>
+    </div>
+</div>
+
 <div class="calculator-container">
     {% csrf_token %}
     <h2 class="calculator-title">Mortgage Calculator</h2>
+    
+    <!-- Home Selection -->
+    <div class="home-selection">
+        <select id="savedHomes" class="mdl-textfield__input">
+            <option value="">Select a saved home</option>
+            {% for home in homes %}
+                <option value="{{ home.id }}">{{ home.name }}</option>
+            {% endfor %}
+        </select>
+        <div class="home-buttons">
+            <button id="saveNewButton" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                Save as New
+            </button>
+            <button id="editHomesButton" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
+                Edit Homes
+            </button>
+        </div>
+    </div>
+
+    <!-- Calculator Inputs -->
     <div class="calculator-layout">
         <div class="input-column">
             <div class="input-group-section">
@@ -47,8 +95,6 @@
                     <input type="number" id="interestRate" name="interestRate" value="{{ calculation.interest_rate }}" step="0.01">
                 </div>
             </div>
-        </div>
-        <div class="input-column">
             <div class="input-group-section">
                 <h3>Additional Costs</h3>
                 <div class="input-group">
@@ -82,32 +128,6 @@
                     <label for="waterTrash">Water & Trash (monthly):</label>
                     <input type="number" id="waterTrash" name="waterTrash" value="{{ calculation.water_trash }}">
                 </div>
-            </div>
-            <div class="input-group-section">
-                <h3>Savings</h3>
-                <div class="input-group">
-                    <label for="person1Contribution">Person 1 Contribution:</label>
-                    <input type="number" id="person1Contribution" name="person1Contribution" value="{{ calculation.person1_contribution }}">
-                </div>
-                <div class="input-group">
-                    <label for="person2Contribution">Person 2 Contribution:</label>
-                    <input type="number" id="person2Contribution" name="person2Contribution" value="{{ calculation.person2_contribution }}">
-                </div>
-                <div class="input-group">
-                    <label for="savingsGoal">Savings Goal:</label>
-                    <input type="number" id="savingsGoal" name="savingsGoal" value="{{ calculation.savings_goal }}">
-                </div>
-            </div>
-        </div>
-        <div class="chart-column">
-            <div class="chart-container">
-                <canvas id="homePriceChart"></canvas>
-            </div>
-            <div class="results-summary">
-                <p id="loanAmount">Loan Amount: $0</p>
-                <p id="monthlyCost">Total Monthly Cost: $0</p>
-                <p id="totalSavings">Total Savings: $0</p>
-                <p id="goalMetMonth">Goal Met Month: -</p>
             </div>
         </div>
     </div>

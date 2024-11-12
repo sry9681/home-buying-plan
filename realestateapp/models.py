@@ -1,10 +1,20 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-# Create your models here.
+class PersonContribution(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    contribution_amount = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.name} - ${self.contribution_amount}"
+
+    class Meta:
+        ordering = ['name']
 
 class MortgageCalculation(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100, default="New Home")  # Name for the saved home
     home_price = models.IntegerField(default=200000)
     down_payment = models.IntegerField(default=30000)
     closing_costs = models.FloatField(default=3.5)
@@ -17,9 +27,9 @@ class MortgageCalculation(models.Model):
     electricity = models.IntegerField(default=200)
     internet = models.IntegerField(default=120)
     water_trash = models.IntegerField(default=90)
-    person1_contribution = models.IntegerField(default=1875)
-    person2_contribution = models.IntegerField(default=1875)
-    savings_goal = models.IntegerField(default=50000)
 
     def __str__(self):
-        return f"Mortgage Calculation for {self.user.username}"
+        return f"{self.name} - {self.user.username}"
+
+    class Meta:
+        ordering = ['name']
