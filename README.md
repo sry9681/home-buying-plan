@@ -4,10 +4,10 @@ A Django web application that helps users plan and visualize their home buying j
 
 ## Features
 - User account system for saving personal calculations
-- Mortgage calculator with detailed cost breakdown
+- Mortgage calculator with detailed cost breakdown for calculating the monthly payment
 - Savings tracker with multiple contributor support
-- Interactive charts showing financial projections
-- Goal setting and progress visualization
+- Interactive chart showing the progress towards the savings goal while paying off the home. Currently the mortgage and savings amount both start at the same time, but this will be changed in the future.
+- Login/Logout system with personal calculations persistently saved in SQLite per user.
 
 ![image](https://github.com/user-attachments/assets/6850f3ff-14e1-4b12-8be3-186f267563eb)
 
