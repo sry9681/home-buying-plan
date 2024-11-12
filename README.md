@@ -9,6 +9,15 @@ A Django web application that helps users plan and visualize their home buying j
 - Interactive charts showing financial projections
 - Goal setting and progress visualization
 
+![image](https://github.com/user-attachments/assets/6850f3ff-14e1-4b12-8be3-186f267563eb)
+
+![image](https://github.com/user-attachments/assets/55a5b339-49c5-4b0f-9503-b0decf84cb18)
+
+![image](https://github.com/user-attachments/assets/dd6f432b-ce9a-4763-a46d-c91310887e22)
+
+
+
+
 ## Requirements
 - Python 3.x
 - Django
