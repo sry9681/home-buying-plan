@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Mortgage Calculator{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+{% endblock %}
+
+{% block content %}
+<!-- Toast notification container -->
+<div id="toast" class="toast"></div>
+
+<!-- Save Home Modal -->
+<div id="saveHomeModal" class="modal">
+    <div class="modal-content">
+        <h3>Save Home</h3>
+        <div class="input-group">
+            <label for="homeName">Home Name:</label>
+            <input type="text" id="homeName" placeholder="Enter a name for this home">
+        </div>
+        <div class="modal-buttons">
+            <button id="saveHomeConfirm" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">Save</button>
+            <button id="saveHomeCancel" class="mdl-button mdl-js-button mdl-button--raised">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Homes Modal -->
+<div id="editHomesModal" class="modal">
+    <div class="modal-content">
+        <h3>Saved Homes</h3>
+        <div id="savedHomesList">
+            <!-- Saved homes will be populated here -->
+        </div>
+        <div class="modal-buttons">
+            <button id="editHomesClose" class="mdl-button mdl-js-button mdl-button--raised">Close</button>
+        </div>
+    </div>
+</div>
+
+<div class="calculator-container">
+    {% csrf_token %}
+    <h2 class="calculator-title">Mortgage Calculator</h2>
+    
+    <!-- Home Selection -->
+    <div class="home-selection">
+        <select id="savedHomes" class="mdl-textfield__input">
+            <option value="">Select a saved home</option>
+            {% for home in homes %}
+                <option value="{{ home.id }}">{{ home.name }}</option>
+            {% endfor %}
+        </select>
+        <div class="home-buttons">
+            <button id="saveNewButton" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                Save as New
+            </button>
+            <button id="editHomesButton" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
+                Edit Homes
+            </button>
+        </div>
+    </div>
+
+    <!-- Calculator Inputs -->
+    <div class="calculator-layout">
+        <div class="input-column">
+            <div class="input-group-section">
+                <h3>Property Details</h3>
+                <div class="input-group slider-group">
+                    <label for="homePrice">Home Price: <span id="homePriceValue">${{ calculation.home_price }}</span></label>
+                    <input type="range" id="homePrice" name="homePrice" min="50000" max="1000000" step="1000" value="{{ calculation.home_price }}">
+                </div>
+                <div class="input-group">
+                    <label for="downPayment">Down Payment:</label>
+                    <input type="number" id="downPayment" name="downPayment" value="{{ calculation.down_payment }}">
+                </div>
+                <div class="input-group">
+                    <label for="closingCosts">Closing Costs (%):</label>
+                    <input type="number" id="closingCosts" name="closingCosts" value="{{ calculation.closing_costs }}" step="0.1">
+                    <span id="closingCostsValue">{{ calculation.closing_costs }}%</span>
+                    <span id="closingCostsDollar"></span>
+                </div>
+            </div>
+            <div class="input-group-section">
+                <h3>Loan Details</h3>
+                <div class="input-group">
+                    <label for="loanTerm">Loan Term (years):</label>
+                    <select id="loanTerm" name="loanTerm">
+                        <option value="15" {% if calculation.loan_term == 15 %}selected{% endif %}>15</option>
+                        <option value="30" {% if calculation.loan_term == 30 %}selected{% endif %}>30</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="interestRate">Interest Rate (%):</label>
+                    <input type="number" id="interestRate" name="interestRate" value="{{ calculation.interest_rate }}" step="0.01">
+                </div>
+            </div>
+            <div class="input-group-section">
+                <h3>Additional Costs</h3>
+                <div class="input-group">
+                    <label for="propertyTax">Property Tax (% per year):</label>
+                    <input type="number" id="propertyTax" name="propertyTax" value="{{ calculation.property_tax }}" step="0.01">
+                </div>
+                <div class="input-group">
+                    <label for="insurance">Insurance (% per year):</label>
+                    <input type="number" id="insurance" name="insurance" value="{{ calculation.insurance_rate }}" step="0.01">
+                </div>
+                <div class="input-group">
+                    <label for="hoa">HOA (monthly):</label>
+                    <input type="number" id="hoa" name="hoa" value="{{ calculation.hoa }}">
+                </div>
+            </div>
+            <div class="input-group-section">
+                <h3>Utilities</h3>
+                <div class="input-group">
+                    <label for="gas">Gas (monthly):</label>
+                    <input type="number" id="gas" name="gas" value="{{ calculation.gas }}">
+                </div>
+                <div class="input-group">
+                    <label for="electricity">Electricity (monthly):</label>
+                    <input type="number" id="electricity" name="electricity" value="{{ calculation.electricity }}">
+                </div>
+                <div class="input-group">
+                    <label for="internet">Internet (monthly):</label>
+                    <input type="number" id="internet" name="internet" value="{{ calculation.internet }}">
+                </div>
+                <div class="input-group">
+                    <label for="waterTrash">Water & Trash (monthly):</label>
+                    <input type="number" id="waterTrash" name="waterTrash" value="{{ calculation.water_trash }}">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="save-button-container">
+        <button id="saveButton" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+            Save Calculation
+        </button>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{% static 'scripts.js' %}"></script>
+{% endblock %}

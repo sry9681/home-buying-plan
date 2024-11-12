@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Savings Amount{% endblock %}
+
+{% block content %}
+<div id="toast" class="toast"></div>
+
+<!-- Add Person Modal -->
+<div id="addPersonModal" class="modal">
+    <div class="modal-content">
+        <h3>Add Person</h3>
+        <div class="input-group">
+            <label for="personName">Name:</label>
+            <input type="text" id="personName" placeholder="Enter person's name">
+        </div>
+        <div class="input-group">
+            <label for="contributionAmount">Monthly Contribution:</label>
+            <input type="number" id="contributionAmount" placeholder="Enter monthly contribution">
+        </div>
+        <div class="modal-buttons">
+            <button id="savePersonConfirm" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">Save</button>
+            <button id="savePersonCancel" class="mdl-button mdl-js-button mdl-button--raised">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Person Modal -->
+<div id="editPersonsModal" class="modal">
+    <div class="modal-content">
+        <h3>Manage Contributors</h3>
+        <div id="personsList">
+            <!-- Contributors will be populated here -->
+        </div>
+        <div class="modal-buttons">
+            <button id="addPersonButton" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                Add Person
+            </button>
+            <button id="editPersonsClose" class="mdl-button mdl-js-button mdl-button--raised">Close</button>
+        </div>
+    </div>
+</div>
+
+<div class="savings-container">
+    {% csrf_token %}
+    <h2 class="savings-title">Savings Amount</h2>
+    
+    <div class="person-selection">
+        <select id="selectedPerson" class="mdl-textfield__input">
+            <option value="">Select a person</option>
+            {% for person in persons %}
+                <option value="{{ person.id }}" data-amount="{{ person.contribution_amount }}">
+                    {{ person.name }} (${{ person.contribution_amount }})
+                </option>
+            {% endfor %}
+        </select>
+        <button id="manageContributorsButton" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
+            Manage Contributors
+        </button>
+    </div>
+
+    <div class="chart-container">
+        <canvas id="savingsChart"></canvas>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{% static 'savings.js' %}"></script>
+{% endblock %} 

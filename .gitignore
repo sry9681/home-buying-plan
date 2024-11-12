@@ -1,0 +1,17 @@
+venv
+*.py[cod]
+*.so
+*.egg
+*.egg-info
+dist
+build
+__pycache__
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+
+# PyCharm
+.idea
+*.swp
