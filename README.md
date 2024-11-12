@@ -1,6 +1,6 @@
 # Housing Investment Plan and Calculator
 
-A Django web application that helps users plan and visualize their home buying journey by calculating mortgage costs and tracking savings progress.
+A Django web application that helps users plan and visualize their home buying journey by calculating mortgage costs and tracking savings progress after purchasing a home. You are able to calculate the cost of a home, add multiple peoples savings (the amount they can contribute to rent + utilities + extra savings to be applied to a future savings goal), then set a target savings goal. This can then tell you how long it will take, given the contributions of one or more people, how long it will take to hit that savings goal while paying off the home.
 
 ## Features
 - User account system for saving personal calculations
