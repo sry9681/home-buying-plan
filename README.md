@@ -116,5 +116,15 @@ home-buying-plan/
 4. Push to the branch
 5. Create a Pull Request
 
+## Future Features
+- Highlight on the navigation bar which page you are on
+- Separate the savings and mortgage calculators into different apps
+- Show on the chart: equity vs interest paid using a stacked line chart or something.
+- Allow multiple home purchases either at a fixed time in the future or based on a trigger event (like a savings goal being met)
+- Allow users to upload a csv of their monthly expenses to auto fill the savings calculator
+    - This will require adding changeable savings rate over time on a per user basis.
+- Add a page that shows the user how much they can save per month given their current expenses and a target amount. (Large update. Low priority)
+- 
+
 ## License
 This project is licensed under the MIT License - see the LICENSE file for details.
