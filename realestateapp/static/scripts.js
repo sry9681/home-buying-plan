@@ -21,11 +21,6 @@
         internet: document.getElementById('internet'),
         waterTrash: document.getElementById('waterTrash'),
         monthlyCost: document.getElementById('monthlyCost'),
-        person1Contribution: document.getElementById('person1Contribution'),
-        person2Contribution: document.getElementById('person2Contribution'),
-        totalSavings: document.getElementById('totalSavings'),
-        savingsGoal: document.getElementById('savingsGoal'),
-        goalMetMonth: document.getElementById('goalMetMonth'),
         chartCanvas: document.getElementById('homePriceChart'),
         savedHomes: document.getElementById('savedHomes'),
         saveNewButton: document.getElementById('saveNewButton'),
@@ -59,6 +54,8 @@
     }
 
     function updateCalculations() {
+        console.log('Starting calculations update');
+        
         const price = parseInt(elements.homePrice.value);
         const payment = parseInt(elements.downPayment.value);
         const closing = parseFloat(elements.closingCosts.value);
@@ -77,153 +74,32 @@
         
         const totalClosingCosts = price * (closing / 100);
         const loanAmount = price - (payment - totalClosingCosts);
-        const closingCosts = totalClosingCosts;
         
         const monthlyPayments = term * 12;
         const monthlyPayment = loanAmount * (rate * Math.pow(1 + rate, monthlyPayments)) / (Math.pow(1 + rate, monthlyPayments) - 1);
         const monthlyPropertyTax = price * propertyTaxRate;
         const monthlyInsurance = price * insuranceRate;
         
-        const totalMonthlyCost = monthlyPayment + monthlyPropertyTax + monthlyInsurance + hoaFee + gasFee + electricityFee + internetFee + waterTrashFee;
-        
-        const totalContribution = parseFloat(elements.person1Contribution.value || 0) + parseFloat(elements.person2Contribution.value || 0);
-        const savings = totalContribution - totalMonthlyCost;
-
-        // Instead of updating DOM directly, return the calculated values
+        const totalMonthlyCost = monthlyPayment + monthlyPropertyTax + monthlyInsurance + 
+            hoaFee + gasFee + electricityFee + internetFee + waterTrashFee;
+    
         return {
             loanAmount,
-            closingCosts,
+            closingCosts: totalClosingCosts,
             monthlyPayment,
-            totalMonthlyCost,
-            savings
+            totalMonthlyCost
         };
     }
 
-    // Update event listeners
-    document.querySelectorAll('input[type="number"], input[type="range"], select').forEach(input => {
-        input.addEventListener('input', () => {
-            const results = updateCalculations();
-            // Update DOM with results
-            elements.loanAmountSpan.textContent = `Loan Amount: $${results.loanAmount.toLocaleString()}`;
-            elements.closingCostsDollar.textContent = `($${results.closingCosts.toLocaleString()})`;
-            elements.monthlyCost.textContent = `Total Monthly Cost: $${results.totalMonthlyCost.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
-            elements.totalSavings.textContent = `Total Savings: $${results.savings.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
-            updateChart(results.totalMonthlyCost, results.savings);
-        });
-    });
-
-    function initializeChart() {
-        // Use default values to create the initial chart
-        const defaultMonthlyPayment = 1000; // Example default value
-        const defaultSavings = 500; // Example default value
-        updateChart(defaultMonthlyPayment, defaultSavings);
-    }
-
-    function updateChart(monthlyCostValue, monthlySavingsValue) {
-        const term = parseInt(elements.loanTerm.value) * 12;
-        
-        const monthlyCosts = Array(term).fill(monthlyCostValue);
-        const totalSpent = monthlyCosts.map((cost, index) => cost * (index + 1));
-        const cumulativeSavings = Array(term).fill(monthlySavingsValue).map((savings, index) => savings * (index + 1));
-
-        const savingsGoalValue = parseFloat(elements.savingsGoal.value);
-        const savingsGoalData = Array(term).fill(savingsGoalValue);
-        let goalMetMonthValue = cumulativeSavings.findIndex(savings => savings >= savingsGoalValue) + 1;
-
-        elements.goalMetMonth.textContent = `Goal Met Month: ${goalMetMonthValue > 0 ? goalMetMonthValue : '-'}`;
-
-        let xAxisMax = goalMetMonthValue > 0 ? Math.ceil(goalMetMonthValue * 1.15) : term;
-
-        const ctx = elements.chartCanvas.getContext('2d');
-        if (homePriceChartInstance) {
-            homePriceChartInstance.destroy();
-        }
-
-        homePriceChartInstance = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: Array.from({ length: term }, (_, i) => i + 1),
-                datasets: [{
-                    label: 'Monthly Cost',
-                    data: monthlyCosts,
-                    borderColor: 'rgb(255, 99, 132)',
-                    backgroundColor: 'rgba(255, 99, 132, 0.5)',
-                }, {
-                    label: 'Total Spent on Home',
-                    data: totalSpent,
-                    borderColor: 'rgb(54, 162, 235)',
-                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                }, {
-                    label: 'Cumulative Savings',
-                    data: cumulativeSavings,
-                    borderColor: 'rgb(75, 192, 192)',
-                    backgroundColor: 'rgba(75, 192, 192, 0.5)',
-                }, {
-                    label: 'Savings Goal',
-                    data: savingsGoalData,
-                    borderColor: 'rgb(0, 0, 0)',
-                    borderDash: [5, 5],
-                    fill: false
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Months'
-                        },
-                        beginAtZero: true,
-                        max: xAxisMax
-                    },
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Amount ($)'
-                        }
-                    }
-                }
-            }
-        });
-
-        if (goalMetMonthValue > 0) {
-            homePriceChartInstance.data.datasets.push({
-                label: 'Goal Met Point',
-                data: Array(term).fill(null).map((_, index) => index + 1 === goalMetMonthValue ? cumulativeSavings[index] : null),
-                borderColor: 'rgb(255, 0, 0)',
-                backgroundColor: 'rgb(255, 0, 0)',
-                pointRadius: 5,
-                pointHoverRadius: 7,
-                showLine: false
-            });
-        }
-
-        homePriceChartInstance.update();
-    }
-
-    // DOM content loaded event
-    document.addEventListener('DOMContentLoaded', () => {
-        console.log('DOM fully loaded and parsed');
-        componentHandler.upgradeAllRegistered();
-        const results = updateCalculations();
-        elements.loanAmountSpan.textContent = `Loan Amount: $${results.loanAmount.toLocaleString()}`;
-        elements.closingCostsDollar.textContent = `($${results.closingCosts.toLocaleString()})`;
-        elements.monthlyCost.textContent = `Total Monthly Cost: $${results.totalMonthlyCost.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
-        elements.totalSavings.textContent = `Total Savings: $${results.savings.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
-        initializeChart();
-        updateChart(results.totalMonthlyCost, results.savings);
-    });
-
     function showToast(message, isSuccess = true) {
+        console.log('Showing toast:', { message, isSuccess });
         const toast = document.getElementById('toast');
         toast.textContent = message;
         toast.className = 'toast ' + (isSuccess ? 'success' : 'error') + ' show';
         
-        // Hide the toast after 3 seconds
+        console.log('Starting toast timer');
         setTimeout(function() {
+            console.log('Hiding toast');
             toast.className = toast.className.replace('show', '');
         }, 3000);
     }
@@ -245,10 +121,7 @@
             gas: elements.gas.value,
             electricity: elements.electricity.value,
             internet: elements.internet.value,
-            water_trash: elements.waterTrash.value,
-            person1_contribution: elements.person1Contribution.value,
-            person2_contribution: elements.person2Contribution.value,
-            savings_goal: elements.savingsGoal.value
+            water_trash: elements.waterTrash.value
         };
 
         // Send the data to your API endpoint
@@ -302,7 +175,6 @@
 
                 // Trigger calculations update
                 const results = updateCalculations();
-                updateChart(results.totalMonthlyCost, results.savings);
             })
             .catch(error => {
                 console.error('Error loading home:', error);
@@ -630,12 +502,5 @@
         if (e.target === elements.editHomesModal) {
             elements.editHomesModal.style.display = 'none';
         }
-    });
-
-    // Initialize
-    document.addEventListener('DOMContentLoaded', () => {
-        componentHandler.upgradeAllRegistered();
-        const results = updateCalculations();
-        updateChart(results.totalMonthlyCost, results.savings);
     });
 })();

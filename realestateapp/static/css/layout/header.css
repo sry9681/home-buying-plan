@@ -1,0 +1,10 @@
+header {
+    background-color: #3f51b5;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+}
+
+.mdl-layout__header-row {
+    /* Add any specific header row styles here */
+} 

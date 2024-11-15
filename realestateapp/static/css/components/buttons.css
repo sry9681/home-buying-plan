@@ -1,0 +1,40 @@
+#saveButton {
+    padding: 10px 20px;
+    font-size: 16px;
+}
+
+.save-button-container {
+    text-align: center;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.home-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.edit-buttons {
+    display: flex;
+    gap: 8px;
+    margin-left: auto;
+}
+
+.edit-buttons .mdl-button {
+    min-width: 64px;
+    padding: 0 16px;
+    height: 36px;
+    line-height: 36px;
+}
+
+.edit-home-button {
+    color: #3f51b5;
+}
+
+.delete-home-button {
+    color: #f44336;
+}
+
+.delete-person-button {
+    color: #f44336;
+} 

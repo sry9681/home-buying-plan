@@ -1,0 +1,48 @@
+/* Grid and layout structures */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.main-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    width: 100%;
+}
+
+.calculator-layout {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.input-column {
+    flex: 1 1 300px;
+    min-width: 300px;
+    max-width: 100%;
+}
+
+.chart-column {
+    flex: 1 1 400px;
+    min-width: 400px;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.mdl-layout__content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.page-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ... other grid related styles ... */ 

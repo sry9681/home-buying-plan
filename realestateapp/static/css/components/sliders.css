@@ -1,0 +1,35 @@
+.slider-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.slider-container .mdl-textfield {
+    flex: none;
+}
+
+.slider-container .mdl-slider {
+    width: 40vw;
+}
+
+.slider-inputs {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 8px;
+}
+
+.slider-inputs .mdl-textfield {
+    flex-basis: 48%;
+}
+
+.slider-labels {
+    display: flex;
+    justify-content: space-between;
+    width: calc(100% - 200px);
+    margin: 0 auto;
+}
+
+.slider-group input[type="range"] {
+    margin-top: 10px;
+} 

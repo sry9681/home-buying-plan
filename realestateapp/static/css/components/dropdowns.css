@@ -1,0 +1,91 @@
+/* Dropdown with checkboxes */
+.dropdown-container {
+    position: relative;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.dropdown-header {
+    padding: 8px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.dropdown-container.active .dropdown-content {
+    display: block;
+}
+
+.checkbox-container {
+    display: block;
+    padding: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.checkbox-container:hover {
+    background-color: #f5f5f5;
+}
+
+.checkbox-container input {
+    margin-right: 8px;
+}
+
+#selectedContributorsList {
+    margin-top: 10px;
+}
+
+.selected-contributor {
+    display: inline-block;
+    background-color: #e8eaf6;
+    padding: 4px 8px;
+    margin: 4px;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.selected-contributor .remove-contributor {
+    margin-left: 8px;
+    cursor: pointer;
+    color: #f44336;
+}
+
+/* Multiple Select Styling */
+select[multiple] {
+    overflow-y: auto;
+    border: 1px solid #ccc;
+}
+
+select[multiple] option {
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+}
+
+select[multiple] option:last-child {
+    border-bottom: none;
+}
+
+select[multiple] option:hover {
+    background-color: #e8eaf6;
+}
+
+select[multiple] option:checked {
+    background-color: #3f51b5;
+    color: white;
+} 
